@@ -1,0 +1,449 @@
+openapi: 3.0.1
+info:
+  title: Transport quotation (Services API)
+  description: "This is a sample Transport quotation server.  You can find out more\
+    \ about     this project at [Github repository](https://github.com/davblckqueen/TransportFullstack)."
+  contact:
+    name: David Reina
+    email: ing.dsrr@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+servers:
+- url: http://localhost:8080/
+tags:
+- name: transport
+  description: Quotations CRUD
+- name: countries
+paths:
+  /quotations:
+    get:
+      tags:
+      - transport
+      summary: Returns all quotations
+      operationId: getProviders
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuotationResonse'
+                x-content-type: application/json
+      x-swagger-router-controller: Transport
+    post:
+      tags:
+      - transport
+      summary: Make a quotation
+      operationId: makeQuotation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuotationRequest'
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuotationResonse'
+                x-content-type: application/json
+      x-swagger-router-controller: Transport
+  /quotations/{quotationId}:
+    get:
+      tags:
+      - transport
+      summary: Returns one quotation
+      operationId: getQuotationById
+      parameters:
+      - name: quotationId
+        in: path
+        description: ID of quotation to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotationResonse'
+      x-swagger-router-controller: Transport
+    put:
+      tags:
+      - transport
+      summary: Update a quotation
+      operationId: updateQuotation
+      parameters:
+      - name: quotationId
+        in: path
+        description: ID of quotation to update
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuotationRequest'
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuotationResonse'
+                x-content-type: application/json
+      x-swagger-router-controller: Transport
+    delete:
+      tags:
+      - transport
+      summary: Delete a quotation
+      operationId: deleteQuotation
+      parameters:
+      - name: quotationId
+        in: path
+        description: ID of quotation to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+      x-swagger-router-controller: Transport
+  /countries:
+    get:
+      tags:
+      - countries
+      summary: getAllCountries
+      description: Gets a list of all `Countries` entities.
+      operationId: getCountries
+      parameters:
+      - name: active
+        in: query
+        description: Gets only active Countries.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: iso3
+        in: query
+        description: Filter Countries by iso3 name.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: iso2
+        in: query
+        description: Filter Countries by iso2 name.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful response - returns an array of `Countries` entities.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CountryResponse'
+                x-content-type: application/json
+      x-swagger-router-controller: Countries
+  /countries/{countryId}:
+    get:
+      tags:
+      - countries
+      summary: getCountryById
+      description: Gets the details of a single instance of a `Country`
+      operationId: getCountry
+      parameters:
+      - name: countryId
+        in: path
+        description: A unique identifier for a `Country`.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful response - returns a single `Country`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryResponse'
+      x-swagger-router-controller: Countries
+  /countries/{countryId}/states:
+    get:
+      tags:
+      - countries
+      summary: getStatesByCountryId
+      description: Gets a list of all `States` entities.
+      operationId: getStates
+      parameters:
+      - name: countryId
+        in: path
+        description: A unique identifier for a `Country`.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: state_code
+        in: query
+        description: Filter States by state code name.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful response - returns an array of `States` entities.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StateResponse'
+                x-content-type: application/json
+      x-swagger-router-controller: Countries
+  /states/{stateId}:
+    get:
+      tags:
+      - countries
+      summary: getStateById
+      description: Gets the details of a single instance of a `State`
+      operationId: getState
+      parameters:
+      - name: stateId
+        in: path
+        description: A unique identifier for a `State`.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful response - returns a single `State`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateResponse'
+      x-swagger-router-controller: Countries
+  /states/{stateId}/cities:
+    get:
+      tags:
+      - countries
+      summary: getCitiesByStateId
+      description: Gets a list of all `Cities` entities.
+      operationId: getCities
+      parameters:
+      - name: stateId
+        in: path
+        description: A unique identifier for a `State`.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful response - returns an array of `Cities` entities.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CityResponse'
+                x-content-type: application/json
+      x-swagger-router-controller: Countries
+  /cities/{cityId}:
+    get:
+      tags:
+      - countries
+      summary: getCityById
+      description: Gets the details of a single instance of a `City`
+      operationId: getCity"
+      parameters:
+      - name: cityId
+        in: path
+        description: A unique identifier for a `City`.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful response - returns a single `City`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CityResponse'
+      x-swagger-router-controller: Countries
+components:
+  schemas:
+    QuotationRequest:
+      type: object
+      properties:
+        start:
+          $ref: '#/components/schemas/LocationRequest'
+        end:
+          $ref: '#/components/schemas/LocationRequest'
+        date:
+          type: string
+          format: date-time
+    QuotationResonse:
+      type: object
+      properties:
+        start:
+          $ref: '#/components/schemas/LocationResponse'
+        end:
+          $ref: '#/components/schemas/LocationResponse'
+        date:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: float
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        start:
+          country: Colombia
+          city: Bogota
+          state: Cundinamarca
+        end: null
+        value: 0.8008282
+    LocationRequest:
+      type: object
+      properties:
+        country:
+          minimum: 0
+          type: integer
+          format: int64
+        state:
+          minimum: 0
+          type: integer
+          format: int64
+        city:
+          minimum: 0
+          type: integer
+          format: int64
+    LocationResponse:
+      type: object
+      properties:
+        country:
+          type: string
+          example: Colombia
+        state:
+          type: string
+          example: Cundinamarca
+        city:
+          type: string
+          example: Bogota
+      example:
+        country: Colombia
+        city: Bogota
+        state: Cundinamarca
+    CountryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: An unique identifier for a `Country`
+          format: int64
+          example: 48
+        name:
+          type: string
+          description: A name for a `Country`
+          example: Colombia
+      example:
+        name: Colombia
+        id: 48
+    StateResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: An unique identifier for a `State`
+          format: int64
+          example: 2875
+        name:
+          type: string
+          description: A name for a `State`
+          example: Cundinamarca Department
+        country_id:
+          type: integer
+          description: A unique identifier for a `Country`
+          format: int64
+          example: 48
+      example:
+        name: Cundinamarca Department
+        id: 2875
+        country_id: 48
+    CityResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: An unique identifier for a `City`
+          format: int64
+          example: 143873
+        name:
+          type: string
+          description: A name for a `City`
+          example: Bogota
+        state_id:
+          type: integer
+          description: A unique identifier for a `State`
+          format: int64
+          example: 2875
+        country_id:
+          type: integer
+          description: A unique identifier for a `Country`
+          format: int64
+          example: 48
+        latitude:
+          type: string
+          description: the latitude value of land's location
+          example: "4.61263889"
+        longitude:
+          type: string
+          description: the longitude value of land's location
+          example: "-74.07050000"
+      example:
+        latitude: "4.61263889"
+        name: Bogota
+        id: 143873
+        state_id: 2875
+        country_id: 48
+        longitude: "-74.07050000"
