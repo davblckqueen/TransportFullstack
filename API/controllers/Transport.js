@@ -13,8 +13,8 @@ module.exports.deleteQuotation = function deleteQuotation (req, res, next, quota
     });
 };
 
-module.exports.getProviders = function getProviders (req, res, next) {
-  Transport.getProviders()
+module.exports.getQuotations = function getProviders (req, res, next) {
+  Transport.getQuotations()
     .then(function (response) {
       utils.writeJson(res, response);
     })
