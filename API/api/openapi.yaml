@@ -11,6 +11,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.1.0
 servers:
+- url: https://transports-quotations.herokuapp.com/
 - url: http://localhost:8080/
 tags:
 - name: transport
