@@ -13,8 +13,8 @@ module.exports.getCities = function getCities (req, res, next, stateId) {
     });
 };
 
-module.exports.getCity&quot; = function getCity&quot; (req, res, next, cityId) {
-  Countries.getCity&quot;(cityId)
+module.exports.getCity = function getCity (req, res, next, cityId) {
+  Countries.getCity(cityId)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -53,7 +53,7 @@ module.exports.getState = function getState (req, res, next, stateId) {
     });
 };
 
-module.exports.getStates = function getStates (req, res, next, countryId, state_code) {
+module.exports.getStates = function getStates (req, res, next, state_code, countryId) {
   Countries.getStates(countryId, state_code)
     .then(function (response) {
       utils.writeJson(res, response);

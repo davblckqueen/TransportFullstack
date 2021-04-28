@@ -291,7 +291,7 @@ paths:
       - countries
       summary: getCityById
       description: Gets the details of a single instance of a `City`
-      operationId: getCity"
+      operationId: getCity
       parameters:
       - name: cityId
         in: path
