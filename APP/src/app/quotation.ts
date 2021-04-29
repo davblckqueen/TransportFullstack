@@ -6,6 +6,35 @@ export interface Timezone {
   tzName: string;
 }
 
+export interface QuotationRequest {
+  start: {
+    country: number,
+    state: number,
+    city: number
+  },
+  end: {
+    country: number,
+    state: number,
+    city: number
+  },
+  date: string
+}
+
+export interface QuotationResponse {
+  start: {
+    country: string,
+    state: string,
+    city: string
+  },
+  end: {
+    country: string,
+    state: string,
+    city: string
+  },
+  value: number,
+  date: string
+}
+
 export interface City {
   id: number;
   name: string;

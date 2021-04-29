@@ -8,6 +8,7 @@ import {map, startWith} from 'rxjs/operators';
 import {CountryModel, State, City} from "../quotation";
 
 import {LocationService} from '../location.service';
+import {QuotationsService} from '../quotations.service';
 
 @Component({
   selector: 'app-form',
@@ -15,6 +16,7 @@ import {LocationService} from '../location.service';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit,AfterViewInit {
+  date: any = null;
   // A
   countryCtrlA = new FormControl();
   stateCtrlA = new FormControl();
@@ -47,7 +49,8 @@ export class FormComponent implements OnInit,AfterViewInit {
   selectedCityB: City | any;
   constructor(
     private snackBar:MatSnackBar,
-    private LocationServiceV1: LocationService
+    private LocationServiceV1: LocationService,
+    private QuotationService1: QuotationsService
   ) {
     this.filteredCountriesA = this.countryCtrlA.valueChanges
       .pipe(
@@ -189,6 +192,39 @@ export class FormComponent implements OnInit,AfterViewInit {
 
   onCityB(event: any, city: any, cityName = null) {
     this.selectedCityB = city;
+  }
+
+  EndDateChange(event: any) {
+      this.date = event.value;
+  }
+  // -------------------------------------SUBMIT--------------------------------------------------
+  onSubmit() {
+    if (!_.isNil(this.selectedCountry) &&
+      !_.isNil(this.selectedCountryB) &&
+      !_.isNil(this.selectedState) &&
+      !_.isNil(this.selectedStateB) &&
+      !_.isNil(this.selectedCity) &&
+      !_.isNil(this.selectedCityB) &&
+      !_.isNil(this.date)) {
+      const body = {
+        start: {
+          country: this.selectedCountry.id,
+          state: this.selectedState.id,
+          city: this.selectedCity.id,
+        },
+        end: {
+          country: this.selectedCountryB.id,
+          state: this.selectedStateB.id,
+          city: this.selectedCityB.id,
+        },
+        date: this.date
+      }
+      this.QuotationService1.createQuotation(body)
+        .then(r => {
+          this.showSuccess("Quotation generated!")
+        })
+        .catch(e => this.showError(e));
+    }
   }
   // -------------------------------------FILTERS-------------------------------------------------
   private _filterCountries(value: string): CountryModel[] {
