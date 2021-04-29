@@ -6,12 +6,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const app = express();
 
 // Serve only the static files form the dist directory
-app.use(express.static(__dirname + '/APP/dist/APP'), createProxyMiddleware({
-    target: 'https://transports-quotations.herokuapp.com',
-    onProxyRes: function (proxyRes, req, res) {
-        proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    }
-}));
+app.use(express.static(__dirname + '/APP/dist/APP'));
 
 app.get('/*', function(req,res) {
 
