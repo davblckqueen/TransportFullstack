@@ -20,6 +20,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import {ReactiveFormsModule} from "@angular/forms";
 
@@ -46,7 +47,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     ReactiveFormsModule,
     MatSnackBarModule,
     MatInputModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDatepickerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

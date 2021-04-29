@@ -15,6 +15,7 @@ import {LocationService} from '../location.service';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit,AfterViewInit {
+  // A
   countryCtrlA = new FormControl();
   stateCtrlA = new FormControl();
   cityCtrlA = new FormControl();
@@ -29,6 +30,21 @@ export class FormComponent implements OnInit,AfterViewInit {
   selectedCountry: CountryModel | any;
   selectedState: State | any;
   selectedCity: City | any;
+  // B
+  countryCtrlB = new FormControl();
+  stateCtrlB = new FormControl();
+  cityCtrlB = new FormControl();
+  countriesB: CountryModel[] | any[] = [];
+  statesB: State[] | any[] = [];
+  citiesB: City[] | any[] = [];
+  filteredCountriesB: Observable<CountryModel[]>;
+  filteredStatesB: Observable<State[]>;
+  filteredCitiesB: Observable<City[]>;
+  drawStateB = true;
+  drawCityB = true;
+  selectedCountryB: CountryModel | any;
+  selectedStateB: State | any;
+  selectedCityB: City | any;
   constructor(
     private snackBar:MatSnackBar,
     private LocationServiceV1: LocationService
@@ -46,14 +62,31 @@ export class FormComponent implements OnInit,AfterViewInit {
     this.filteredCitiesA = this.cityCtrlA.valueChanges
       .pipe(
         startWith(''),
-        map(state => state ? this._filterCities(state) : this.states.slice())
+        map(state => state ? this._filterCities(state) : this.cities.slice())
+      );
+    this.filteredCountriesB = this.countryCtrlB.valueChanges
+      .pipe(
+        startWith(''),
+        map(state => state ? this._filterCountriesB(state) : this.countriesB.slice())
+      );
+    this.filteredStatesB = this.stateCtrlB.valueChanges
+      .pipe(
+        startWith(''),
+        map(state => state ? this._filterStatesB(state) : this.statesB.slice())
+      );
+    this.filteredCitiesB = this.cityCtrlB.valueChanges
+      .pipe(
+        startWith(''),
+        map(state => state ? this._filterCitiesB(state) : this.citiesB.slice())
       );
   }
   ngAfterViewInit(): void {
     this.LocationServiceV1.getAllCountries()
       .then((foundCountries: any) => {
           this.countries = foundCountries;
+          this.countriesB = foundCountries;
           this.countryCtrlA.setValidators([Validators.required]);
+          this.countryCtrlB.setValidators([Validators.required]);
         }
       )
       .catch((err: any) => this.showError(err));
@@ -62,6 +95,8 @@ export class FormComponent implements OnInit,AfterViewInit {
   ngOnInit(): void {
     this.stateCtrlA.disable();
     this.cityCtrlA.disable();
+    this.stateCtrlB.disable();
+    this.cityCtrlB.disable();
   }
 
   onCountry(event: any, country: any, countryName = null) {
@@ -105,6 +140,56 @@ export class FormComponent implements OnInit,AfterViewInit {
       })
       .catch(err => this.showError(err));
   }
+
+  onCity(event: any, city: any, cityName = null) {
+    this.selectedCity = city;
+  }
+
+  onCountryB(event: any, country: any, countryName = null) {
+    this.selectedCountryB = country;
+    this.drawStateB = false;
+    this.LocationServiceV1.getStatesByCountryId(this.selectedCountryB.id)
+      .then(states => {
+        this.statesB = states;
+        if (this.statesB.length > 0) {
+          this.stateCtrlB.enable();
+          this.stateCtrlB.setValidators([Validators.required]);
+          this.drawStateB = true;
+          // let county = this.cities.filter(city => city.name == cityName)
+          // this.county.setValue(county[0])
+          // if(this.viewOnly) this.county.disable();
+        } else {
+          this.stateCtrlB.disable();
+          this.stateCtrlB.clearValidators();
+        }
+      })
+      .catch(err => this.showError(err));
+  }
+
+  onStateB(event: any, state: any, cityName = null){
+    this.selectedStateB = state;
+    this.drawCityB = false;
+    this.LocationServiceV1.getCitiesByStateId(this.selectedStateB.id)
+      .then(cities => {
+        this.citiesB = cities;
+        if (this.citiesB.length > 0) {
+          this.cityCtrlB.enable();
+          this.cityCtrlB.setValidators([Validators.required]);
+          this.drawCityB = true;
+          // let county = this.cities.filter(city => city.name == cityName)
+          // this.county.setValue(county[0])
+          // if(this.viewOnly) this.county.disable();
+        } else {
+          this.cityCtrlB.disable();
+          this.cityCtrlB.clearValidators();
+        }
+      })
+      .catch(err => this.showError(err));
+  }
+
+  onCityB(event: any, city: any, cityName = null) {
+    this.selectedCityB = city;
+  }
   // -------------------------------------FILTERS-------------------------------------------------
   private _filterCountries(value: string): CountryModel[] {
     const filterValue = value.toLowerCase();
@@ -117,6 +202,18 @@ export class FormComponent implements OnInit,AfterViewInit {
   private _filterCities(value: string): State[] {
     const filterValue = value.toLowerCase();
     return _.filter(this.cities,state => state.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+  private _filterCountriesB(value: string): CountryModel[] {
+    const filterValue = value.toLowerCase();
+    return _.filter(this.countriesB,country => country.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+  private _filterStatesB(value: string): State[] {
+    const filterValue = value.toLowerCase();
+    return _.filter(this.statesB,state => state.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+  private _filterCitiesB(value: string): State[] {
+    const filterValue = value.toLowerCase();
+    return _.filter(this.citiesB,state => state.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   // -------------------------------------Snackbar Management-------------------------------------
