@@ -12,7 +12,7 @@ export class LocationService {
 
   constructor(private http: HttpClient) { }
 
-  getAllCountries(active?: boolean, iso3?: string, iso2?: string) {
+  getAllCountries(active?: boolean, iso3?: string, iso2?: string):CountryModel[]|any {
     let params;
     params = {
       active: active || false

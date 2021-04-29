@@ -7,6 +7,7 @@ var oas3Tools = require('oas3-tools');
 var serverPort = process.env.PORT || 8080;
 
 // Dependencies
+const cors = require('cors')
 const mongoose = require('mongoose');
 
 // swaggerRouter configuration
@@ -18,6 +19,7 @@ var options = {
 
 var expressAppConfig = oas3Tools.expressAppConfig(path.join(__dirname, 'api/openapi.yaml'), options);
 var app = expressAppConfig.getApp();
+app.use(cors());
 
 // Initialize the Swagger middleware
 http.createServer(app).listen(serverPort, async () => {

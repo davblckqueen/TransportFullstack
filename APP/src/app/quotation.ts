@@ -15,6 +15,7 @@ export interface City {
   country_code: string;
   latitude: string;
   longitude: string;
+  selected?: boolean;
 }
 
 export interface State {
@@ -23,6 +24,7 @@ export interface State {
   country_id: number;
   country_code: string;
   state_code: string;
+  selected?: boolean;
 }
 
 export interface CountryModel {
@@ -39,4 +41,5 @@ export interface CountryModel {
   timezones: Timezone[];
   emoji: string;
   emojiU: string;
+  selected?: boolean;
 }
