@@ -106,3 +106,4 @@ dist
 .idea
 /API/package-lock.json
 /APP/package-lock.json
+/package-lock.json
