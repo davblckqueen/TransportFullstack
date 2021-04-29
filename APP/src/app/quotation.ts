@@ -21,6 +21,7 @@ export interface QuotationRequest {
 }
 
 export interface QuotationResponse {
+  _id: string,
   start: {
     country: string,
     state: string,
