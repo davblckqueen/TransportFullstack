@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, EventEmitter} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {FormControl, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
@@ -16,6 +16,7 @@ import {QuotationsService} from '../quotations.service';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit,AfterViewInit {
+  @Output() refreshList = new EventEmitter()
   date: any = null;
   // A
   countryCtrlA = new FormControl();
@@ -221,7 +222,8 @@ export class FormComponent implements OnInit,AfterViewInit {
       }
       this.QuotationService1.createQuotation(body)
         .then(r => {
-          this.showSuccess("Quotation generated!")
+          this.showSuccess("Quotation generated!");
+          this.refreshList.emit(true);
         })
         .catch(e => this.showError(e));
     }

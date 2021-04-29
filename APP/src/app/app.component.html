@@ -6,6 +6,7 @@
   </button>
 </mat-toolbar>
 <section class="sec-center">
-  <app-form></app-form>
+  <app-form (refreshList)="onRefreshList($event)"></app-form>
+  <app-list></app-list>
 </section>
 
